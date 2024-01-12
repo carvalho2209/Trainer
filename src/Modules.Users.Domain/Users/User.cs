@@ -7,6 +7,14 @@ namespace Modules.Users.Domain.Users;
 /// </summary>
 public sealed class User : Entity<UserId>, IAuditable 
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="identityProviderId"></param>
+    /// <param name="email"></param>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
     public User(UserId id, string identityProviderId, string email, string firstName, string lastName)
         : base(id)
     {

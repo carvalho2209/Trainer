@@ -1,12 +1,15 @@
 ﻿using Domain.Primitives;
+using Modules.Users.Domain.Roles;
 
 namespace Modules.Users.Domain.Users;
 
 /// <summary>
 /// Represents the user entity
 /// </summary>
-public sealed class User : Entity<UserId>, IAuditable 
+public sealed class User : Entity<UserId>, IAuditable
 {
+    private readonly HashSet<Role> _roles = new();
+    
     /// <summary>
     /// 
     /// </summary>
@@ -49,4 +52,6 @@ public sealed class User : Entity<UserId>, IAuditable
     
     /// <inheritdoc cref="ModifiedOnUtc"/>
     public DateTime? ModifiedOnUtc { get; private set; }
+
+    public IReadOnlyCollection<Role> Roles => _roles.ToList().AsReadOnly();
 }

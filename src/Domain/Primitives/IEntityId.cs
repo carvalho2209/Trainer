@@ -1,3 +1,3 @@
 ﻿namespace Domain.Primitives;
 
-public interface IEntityId; 
+public interface IEntityId{}; 

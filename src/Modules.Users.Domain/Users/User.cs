@@ -9,7 +9,7 @@ namespace Modules.Users.Domain.Users;
 public sealed class User : Entity<UserId>, IAuditable
 {
     private readonly HashSet<Role> _roles = new();
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -21,10 +21,10 @@ public sealed class User : Entity<UserId>, IAuditable
     public User(UserId id, string identityProviderId, string email, string firstName, string lastName)
         : base(id)
     {
-        IdentityProviderId = identityProviderId;
         Email = email;
         FirstName = firstName;
-        LastName = lastName; 
+        LastName = lastName;
+        IdentityProviderId = identityProviderId;
     }
 
     /// <summary>

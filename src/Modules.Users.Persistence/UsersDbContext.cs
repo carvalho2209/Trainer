@@ -3,6 +3,9 @@ using Modules.Users.Persistence.Constants;
 
 namespace Modules.Users.Persistence;
 
+/// <summary>
+/// Represents the users module database context.
+/// </summary>
 public sealed class UsersDbContext : DbContext
 {
     /// <summary>
@@ -10,8 +13,11 @@ public sealed class UsersDbContext : DbContext
     /// </summary>
     /// <param name="options">The database context options.</param>
     public UsersDbContext(DbContextOptions<UsersDbContext> options)
-        : base(options) { }
+        : base(options)
+    {
+    }
 
+    /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema(Schemas.Users);

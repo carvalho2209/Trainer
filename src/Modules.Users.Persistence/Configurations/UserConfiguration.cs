@@ -17,14 +17,14 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .Tap(ConfigureRelationships)
             .Tap(ConfigureIndexes);
 
-    private void ConfigureIndexes(EntityTypeBuilder<User> builder)
+    private static void ConfigureIndexes(EntityTypeBuilder<User> builder)
     {
         builder.HasIndex(user => user.Email).IsUnique();
 
         builder.HasIndex(user => user.IdentityProviderId).IsUnique();
     }
 
-    private void ConfigureRelationships(EntityTypeBuilder<User> builder) =>
+    private static void ConfigureRelationships(EntityTypeBuilder<User> builder) =>
         builder.HasMany(user => user.Roles)
             .WithMany(role => role.Users)
             .UsingEntity<UserRole>();

@@ -1,23 +1,42 @@
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
+WORKDIR /root
+
+# Common
+COPY ["src/Shared/Shared.csproj", "src/Shared/"]
+COPY ["src/Domain/Domain.csproj", "src/Domain/"]
+COPY ["src/Application/Application.csproj", "src/Application/"]
+COPY ["src/Authorization/Authorization.csproj", "src/Authorization/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
+COPY ["src/Persistence/Persistence.csproj", "src/Persistence/"]
+COPY ["src/Endpoints/Endpoints.csproj", "src/Endpoints/"]
+
+# Modules - Users
+COPY ["src/Modules.Users.Domain/Modules.Users.Domain.csproj", "src/Modules.Users.Domain/"]
+COPY ["src/Modules.Users.Application/Modules.Users.Application.csproj", "src/Modules.Users.Application/"]
+COPY ["src/Modules.Users.Endpoints/Modules.Users.Endpoints.csproj", "src/Modules.Users.Endpoints/"]
+COPY ["src/Modules.Users.Infrastructure/Modules.Users.Infrastructure.csproj", "src/Modules.Users.Infrastructure/"]
+COPY ["src/Modules.Users.Persistence/Modules.Users.Persistence.csproj", "src/Modules.Users.Persistence/"]
+
+
+# Executable
 COPY ["src/WebApp/WebApp.csproj", "src/WebApp/"]
-RUN dotnet restore "./src/WebApp/WebApp.csproj"
+
+RUN dotnet restore "src/WebApp/WebApp.csproj"
+
 COPY . .
-WORKDIR "/src/src/WebApp"
-RUN dotnet build "./WebApp.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+WORKDIR "/root/src/WebApp"
+RUN dotnet build "WebApp.csproj" --configuration Release --output /app/build
 
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./WebApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "WebApp.csproj" --configuration Release --output /app/publish
 
 FROM base AS final
 WORKDIR /app

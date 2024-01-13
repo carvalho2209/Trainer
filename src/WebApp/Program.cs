@@ -1,3 +1,6 @@
+using Infrastructure.Extensions;
+using Serilog;
+using WebApp.Extensions;
 
 namespace WebApp;
 
@@ -7,23 +10,36 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddAuthorization();
+        builder.Services
+            .InstallServicesFromAssemblies(
+                builder.Configuration,
+                WebApp.AssemblyReference.Assembly,
+                Authorization.AssemblyReference.Assembly,
+                Persistence.AssemblyReference.Assembly)
+            .InstallModulesFromAssemblies(
+                builder.Configuration,
+                Modules.Users.Infrastructure.AssemblyReference.Assembly);
 
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Host.UseSerilogWithConfiguration();
+        
+        var webApplication = builder.Build();
 
-        var app = builder.Build();
+        webApplication
+            .UseSwagger()
+            .UseSwaggerUI()
+            .UseCors(corsPolicyBuilder =>
+                corsPolicyBuilder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin());
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+        webApplication.UseSerilogRequestLogging()
+            .UseHttpsRedirection()
+            .UseAuthentication()
+            .UseAuthorization();
 
-        app.UseHttpsRedirection();
+        webApplication.MapControllers();
 
-        app.UseAuthorization();
-
-        app.Run();
+        webApplication.Run();
     }
 }

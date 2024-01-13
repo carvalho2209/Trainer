@@ -1,12 +1,15 @@
 ﻿namespace Modules.Users.Domain.Roles;
 
+/// <summary>
+/// Represents the role-permission join entity.
+/// </summary>
 public sealed class RolePermission
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="RolePermission"/> class.
     /// </summary>
-    /// <param name="role"></param>
-    /// <param name="permission"></param>
+    /// <param name="role">The role.</param>
+    /// <param name="permission">The permission.</param>
     public RolePermission(Role role, Permission permission)
     {
         RoleId = role.Id;
@@ -19,7 +22,9 @@ public sealed class RolePermission
     /// <remarks>
     ///  Required by EF Core.
     /// </remarks>
-    public RolePermission() { }
+    private RolePermission()
+    {
+    }
 
     /// <summary>
     /// Gets the role identifier.

@@ -3,4 +3,4 @@
 /// <summary>
 /// Represents the scoped service lifetime.
 /// </summary>
-public interface IScoped{};
+public interface IScoped;

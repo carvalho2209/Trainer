@@ -15,6 +15,7 @@ namespace Modules.Users.Infrastructure.ServiceInstallers;
 /// </summary>
 internal sealed class PersistenceServiceInstaller : IServiceInstaller
 {
+    /// <inheritdoc />
     public void Install(IServiceCollection services, IConfiguration configuration) =>
         services
             .AddDbContext<UsersDbContext>((serviceProvider, options) =>
@@ -22,7 +23,9 @@ internal sealed class PersistenceServiceInstaller : IServiceInstaller
                 ConnectionStringOptions connectionString =
                     serviceProvider.GetService<IOptions<ConnectionStringOptions>>()!.Value;
 
-                options.UseNpgsql(connectionString,
+                options
+                    .UseNpgsql(
+                        connectionString,
                         dbContextOptionsBuilder =>
                             dbContextOptionsBuilder.WithMigrationHistoryTableInSchema(Schemas.Users))
                     .UseSnakeCaseNamingConvention();

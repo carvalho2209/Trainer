@@ -4,7 +4,7 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace WebApp.Swagger;
+namespace WebApp.ServiceInstallers.Swagger;
 
 /// <summary>
 /// Represents the <see cref="SwaggerGenOptions"/> setup.

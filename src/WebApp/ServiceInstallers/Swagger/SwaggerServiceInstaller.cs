@@ -1,8 +1,8 @@
 ﻿using Infrastructure.Configuration;
 
-namespace WebApp.Swagger;
+namespace WebApp.ServiceInstallers.Swagger;
 
-internal sealed class SwaggerServiceInstaller : IServiceInstaller 
+internal sealed class SwaggerServiceInstaller : IServiceInstaller
 {
     public void Install(IServiceCollection services, IConfiguration configuration)
     {

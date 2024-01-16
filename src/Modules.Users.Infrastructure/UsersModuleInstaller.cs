@@ -5,8 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Modules.Users.Infrastructure;
 
+/// <summary>
+/// Represents the users module installer.
+/// </summary>
 public sealed class UsersModuleInstaller : IModuleInstaller
 {
+    /// <inheritdoc />
     public void Install(IServiceCollection services, IConfiguration configuration) =>
         services
             .InstallServicesFromAssemblies(configuration, AssemblyReference.Assembly)

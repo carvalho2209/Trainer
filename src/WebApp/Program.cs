@@ -13,7 +13,7 @@ public class Program
         builder.Services
             .InstallServicesFromAssemblies(
                 builder.Configuration,
-                WebApp.AssemblyReference.Assembly,
+                AssemblyReference.Assembly,
                 Authorization.AssemblyReference.Assembly,
                 Persistence.AssemblyReference.Assembly)
             .InstallModulesFromAssemblies(

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace WebApp.Swagger;
+namespace WebApp.ServiceInstallers.Swagger;
 
 /// <summary>
 /// Represents the <see cref="SwaggerUIOptions"/>

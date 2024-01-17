@@ -1,6 +1,7 @@
 using Infrastructure.Extensions;
 using Serilog;
 using WebApp.Extensions;
+using WebApp.Utility;
 
 namespace WebApp;
 
@@ -8,38 +9,41 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        LoggingUtility.Run(() =>
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services
-            .InstallServicesFromAssemblies(
-                builder.Configuration,
-                AssemblyReference.Assembly,
-                Authorization.AssemblyReference.Assembly,
-                Persistence.AssemblyReference.Assembly)
-            .InstallModulesFromAssemblies(
-                builder.Configuration,
-                Modules.Users.Infrastructure.AssemblyReference.Assembly);
+            builder.Services
+                .InstallServicesFromAssemblies(
+                    builder.Configuration,
+                    AssemblyReference.Assembly,
+                    Authorization.AssemblyReference.Assembly,
+                    Persistence.AssemblyReference.Assembly)
+                .InstallModulesFromAssemblies(
+                    builder.Configuration,
+                    Modules.Users.Infrastructure.AssemblyReference.Assembly);
 
-        builder.Host.UseSerilogWithConfiguration();
-        
-        var webApplication = builder.Build();
+            builder.Host.UseSerilogWithConfiguration();
 
-        webApplication
-            .UseSwagger()
-            .UseSwaggerUI()
-            .UseCors(corsPolicyBuilder =>
-                corsPolicyBuilder
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowAnyOrigin());
+            var webApplication = builder.Build();
 
-        webApplication.UseSerilogRequestLogging()
-            .UseHttpsRedirection()
-            .UseAuthentication()
-            .UseAuthorization();
+            webApplication
+                .UseSwagger()
+                .UseSwaggerUI()
+                .UseCors(corsPolicyBuilder =>
+                    corsPolicyBuilder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin());
 
-        webApplication.MapControllers();
+            webApplication.UseSerilogRequestLogging()
+                .UseHttpsRedirection()
+                .UseAuthentication()
+                .UseAuthorization();
 
-        webApplication.Run();
+            webApplication.MapControllers();
+
+            webApplication.Run();
+        });
     }
 }

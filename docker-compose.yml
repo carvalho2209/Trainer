@@ -1,20 +1,20 @@
 version: '3.4'
 
 services:
-  trainer-app:
+  trainers-app:
     image: ${DOCKER_REGISTRY-}app
     container_name: WebApp
     build:
       context: .
       dockerfile: src/WebApp/Dockerfile
     depends_on:
-      - trainer-db
+      - trainers-db
 
-  trainer-db:
+  trainers-db:
     image: postgres:14.1
     container_name: Database
     environment:
-      - POSTGRES_DB=trainer
+      - POSTGRES_DB=trainers
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
@@ -22,11 +22,11 @@ services:
     ports:
       - 5100:5432
 
-  trainer-db-management:
+  trainers-db-management:
     image: dpage/pgadmin4:latest
     container_name: Database_management
     depends_on:
-      - trainer-db
+      - trainers-db
     volumes:
       - ./.files/dev_servers.json:/pgadmin4/servers.json
       - ./.containers/database_management:/var/lib/pgadmin

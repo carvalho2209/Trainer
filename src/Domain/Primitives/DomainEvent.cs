@@ -17,7 +17,6 @@ public abstract class DomainEvent : IDomainEvent
         OccurredOnUtc = occurredOnUtc;
     }
 
-
     /// <summary>
     /// Initializes a new instance of the <see cref="DomainEvent"/> class.
     /// </summary>

@@ -3,7 +3,7 @@ version: '3.4'
 services:
   trainers-app:
     image: ${DOCKER_REGISTRY-}app
-    container_name: WebApp
+    container_name: trainer-app
     build:
       context: .
       dockerfile: src/WebApp/Dockerfile
@@ -11,14 +11,14 @@ services:
       - trainers-db
 
   trainers-db:
-    image: postgres:14.1
-    container_name: Database
+    image: postgres:latest
+    container_name: trainer-db
     environment:
       - POSTGRES_DB=trainers
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./.containers/database:/var/lib/postgresql/data
+      - ./.containers/db:/var/lib/postgresql/data
     ports:
       - 5100:5432
 

@@ -13,7 +13,7 @@ COPY ["src/Application/Application.csproj", "src/Application/"]
 COPY ["src/Authorization/Authorization.csproj", "src/Authorization/"]
 COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
 COPY ["src/Persistence/Persistence.csproj", "src/Persistence/"]
-COPY ["src/Endpoints/Endpoints.csproj", "src/Endpoints/"]
+COPY ["src/EndPoints/EndPoints.csproj", "src/EndPoints/"]
 
 # Modules - Users
 COPY ["src/Modules.Users.Domain/Modules.Users.Domain.csproj", "src/Modules.Users.Domain/"]

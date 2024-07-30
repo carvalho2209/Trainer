@@ -1,9 +1,7 @@
-﻿using FluentValidation;
-using Infrastructure.Configuration;
+﻿using Infrastructure.Configuration;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Extensions;
 
 namespace Modules.Users.Infrastructure.ServiceInstallers;
 

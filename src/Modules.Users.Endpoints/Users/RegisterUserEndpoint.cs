@@ -13,14 +13,10 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Modules.Users.Endpoints.Users;
 
-public sealed class RegisterUserEndpoint : EndpointBaseAsync
+public sealed class RegisterUserEndpoint(ISender sender) : EndpointBaseAsync
     .WithRequest<RegisterUserRequest>
     .WithActionResult<Guid>
 {
-    private readonly ISender _sender;
-
-    public RegisterUserEndpoint(ISender sender) => _sender = sender;
-
     [Authorize]
     [HttpPost(UsersRoutes.Register)]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
@@ -30,13 +26,16 @@ public sealed class RegisterUserEndpoint : EndpointBaseAsync
         Summary = "Registers a new user.",
         Description = "Registers a new user based on the specified request.",
         Tags = new[] { UsersRoutes.Tag })]
-    public override async Task<ActionResult<Guid>> HandleAsync(RegisterUserRequest request, CancellationToken cancellationToken = default) =>
+    public override async Task<ActionResult<Guid>> HandleAsync(RegisterUserRequest request,
+        CancellationToken cancellationToken = default) =>
         await Result.Create(request)
             .Map(registerUserRequest => new RegisterUserCommand(
                 User.GetIdentityProviderId(),
                 registerUserRequest.Email,
                 registerUserRequest.FirstName,
                 registerUserRequest.LastName))
-            .Bind(command => _sender.Send(command, cancellationToken))
-            .Match(userId => CreatedAtRoute(nameof(GetUserByIdEndpoint), new { userId }, userId), this.HandleFailure);
+            .Bind(command => sender.Send(command, cancellationToken))
+            .Match(userId => CreatedAtRoute(nameof(GetUserByIdEndpoint),
+                new { userId }, userId), this.HandleFailure);
+
 }
